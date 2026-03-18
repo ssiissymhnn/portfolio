@@ -220,7 +220,7 @@ function App() {
             <button
               key={page}
               onClick={() => handleNavClick(page)}
-              className={`transition-colors duration-100 tracking-wide hover:text-[#47A0D8] origin-left ${activePage === page ? 'text-[#47A0D8]' : 'text-[#ffffff]'}`}
+              className={` cursor-pointer transition-colors duration-100 tracking-wide hover:text-[#47A0D8] origin-left ${activePage === page ? 'text-[#47A0D8]' : 'text-[#ffffff]'}`}
             >
               {page}
             </button>
@@ -233,3 +233,19 @@ function App() {
 }
 
 export default App;
+< !doctype html >
+  <html lang="ko">
+    <head>
+      <meta charset="UTF-8" />
+      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <title>SISI</title>
+
+    </head>
+    <body>
+      <div id="root"></div>
+      <script type="module" src="/src/main.jsx"></script>
+    </body>
+  </html>
+
