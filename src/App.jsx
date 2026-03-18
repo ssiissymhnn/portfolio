@@ -15,7 +15,7 @@ function App() {
   const [isRevealed, setIsRevealed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activePage, setActivePage] = useState('Home');
+  const [activePage, setActivePage] = useState('Home.');
 
   const toggleGallery = () => {
     setIsRevealed(!isRevealed);
@@ -25,21 +25,12 @@ function App() {
   const handleNavClick = (page) => {
     setActivePage(page);
     setIsMenuOpen(false);
-    if (page === 'Home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (page === 'Work') {
-      setIsRevealed(true);
-      setTimeout(() => {
-        window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
-      }, 100);
-    } else {
-      // Profile empty behavior for now
-    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   return (
-    // Only allow scrolling when isRevealed is true
-    <div className={`relative w-full bg-[#E9EBB7] font-sans selection:bg-[#171717] selection:text-[#E9EBB7] overflow-x-hidden ${isRevealed ? 'min-h-[300vh] pb-[20vh]' : 'h-screen overflow-hidden'}`}>
+    // Only allow scrolling when isRevealed is true or when on another page
+    <div className={`relative w-full bg-[#E9EBB7] font-sans selection:bg-[#171717] selection:text-[#E9EBB7] overflow-x-hidden ${(activePage !== 'Home.' || isRevealed) ? 'min-h-[100vh] pb-[10vh]' : 'h-screen overflow-hidden'}`}>
 
       {/* 1. Header is transparent */}
       {/* bg-transparent ensures it never has a solid background color */}
@@ -63,115 +54,144 @@ function App() {
         </button>
       </header>
 
-      {/* 2. Top Screen (Cherry & Cluster) */}
-      <section className="relative w-full h-screen">
-        {/* The Cherry - Placed at dead center of 100vh height */}
-        <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
-          {/* We do NOT apply transform translation when revealed, so the cherry stays perfectly still */}
-          <div
-            className="relative z-[100] cursor-pointer pointer-events-auto -duration-100  pb-[5vh]"
-            onClick={toggleGallery}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <div className="relative w-40 h-40 md:w-56 md:h-56 -mt-20">
-              <img
-                src="/cc.png"
-                alt="Cherry Default"
-                className={`absolute inset-0 w-full h-full object-contain drop-shadow-2xl ${!isHovered ? 'opacity-100' : 'opacity-0'}`}
-              />
-              <img
-                src="/cc_cut.png"
-                alt="Cherry Cut Hover"
-                className={`absolute inset-0 w-full h-full object-contain drop-shadow-2xl ${isHovered ? 'opacity-100' : 'opacity-0'}`}
-              />
+      {/* 2. Top Screen (Cherry & Cluster) - ONLY ON HOME PAGE */}
+      {activePage === 'Home.' && (
+        <section className="relative w-full h-screen">
+          {/* The Cherry - Placed at dead center of 100vh height */}
+          <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
+            {/* We do NOT apply transform translation when revealed, so the cherry stays perfectly still */}
+            <div
+              className="relative z-[100] cursor-pointer pointer-events-auto -duration-100  pb-[5vh]"
+              onClick={toggleGallery}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <div className="relative w-40 h-40 md:w-56 md:h-56 -mt-20">
+                <img
+                  src="/cc.png"
+                  alt="Cherry Default"
+                  className={`absolute inset-0 w-full h-full object-contain drop-shadow-2xl ${!isHovered ? 'opacity-100' : 'opacity-0'}`}
+                />
+                <img
+                  src="/cc_cut.png"
+                  alt="Cherry Cut Hover"
+                  className={`absolute inset-0 w-full h-full object-contain drop-shadow-2xl ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* The Top Cluster (Only images, no text!) */}
-        <div
-          className={`absolute inset-0 pointer-events-none transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] z-10 ${isRevealed ? 'opacity-100 visible' : 'opacity-0 invisible'
-            }`}
-        >
-          {clusterItems.map((item, index) => (
-            <div
-              key={item.id}
-              className={`absolute pointer-events-auto shadow-lg overflow-hidden transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.bg}`}
-              style={{
-                top: item.top,
-                left: item.left,
-                width: item.w,
-                aspectRatio: item.aspect,
-                zIndex: item.z,
-                // Simple entry animation
-                transform: isRevealed ? 'translateY(0)' : 'translateY(10vh)',
-                transitionDelay: `${index * 80}ms`
-              }}
-            >
-              <span className="absolute inset-0 flex items-center justify-center font-mono text-xs opacity-40 text-center break-all text-[#171717]">img{index + 1}</span>
-              {/* Replace with your image tags when ready, e.g. <img src="..." className="w-full h-full object-cover"/> */}
-            </div>
-          ))}
-        </div>
-      </section>
+          {/* The Top Cluster (Only images, no text!) */}
+          <div
+            className={`absolute inset-0 pointer-events-none transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] z-10 ${isRevealed ? 'opacity-100 visible' : 'opacity-0 invisible'
+              }`}
+          >
+            {clusterItems.map((item, index) => (
+              <div
+                key={item.id}
+                className={`absolute pointer-events-auto shadow-lg overflow-hidden transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.bg}`}
+                style={{
+                  top: item.top,
+                  left: item.left,
+                  width: item.w,
+                  aspectRatio: item.aspect,
+                  zIndex: item.z,
+                  // Simple entry animation
+                  transform: isRevealed ? 'translateY(0)' : 'translateY(10vh)',
+                  transitionDelay: `${index * 80}ms`
+                }}
+              >
+                <span className="absolute inset-0 flex items-center justify-center font-mono text-xs opacity-40 text-center break-all text-[#171717]">img{index + 1}</span>
+                {/* Replace with your image tags when ready, e.g. <img src="..." className="w-full h-full object-cover"/> */}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. The Scrollable Portfolio Items Below */}
-      {/* These will appear below the 100vh fold when revealed, allowing users to scroll down naturally */}
-      <section
-        className={`relative w-full max-w-screen-xl mx-auto flex flex-col items-center gap-16 md:gap-32 pt-10 pb-32 transition-all duration-1000 delay-500 ease-out ${isRevealed ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-32 invisible'
-          }`}
-      >
-        {/* Row 1: 3D Poster / Monochrome Poster */}
-        <div className="w-full flex justify-between items-start px-[10vw] md:px-[15vw] mt-110">
-          <div className="flex flex-col group w-[30vw] md:w-[22vw]">
-            <div className="w-full aspect-[3/4] bg-[#ffccd5] mb-4 shadow-lg overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-500 relative">
-              <span className="absolute inset-0 flex items-center justify-center font-mono text-xs opacity-50 p-2 text-center text-black">src="/images/popup.jpg"</span>
+      {/* 3. The Scrollable Portfolio Items Below (Only on Home Page) */}
+      {activePage === 'Home.' && (
+        <section
+          className={`relative w-full max-w-screen-xl mx-auto flex flex-col items-center gap-16 md:gap-32 pb-32 transition-all duration-1000 ease-out 
+            ${isRevealed ? 'opacity-100 translate-y-0 visible pt-10 delay-500' : 'opacity-0 translate-y-32 invisible pt-10'}
+          `}
+        >
+          {/* Row 1: 3D Poster / Monochrome Poster */}
+          <div className="w-full flex justify-between items-start px-[10vw] md:px-[15vw] mt-110">
+            <div className="flex flex-col group w-[30vw] md:w-[22vw]">
+              <div className="w-full aspect-[3/4] bg-[#ffccd5] mb-4 shadow-lg overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-500 relative">
+                <span className="absolute inset-0 flex items-center justify-center font-mono text-xs opacity-50 p-2 text-center text-black">src="/images/popup.jpg"</span>
+              </div>
+              <div className="opacity-90 mt-2">
+                <h3 className="text-sm md:text-base font-semibold text-[#171717] tracking-wider leading-snug">3D Poster / 2026.Nov</h3>
+                <p className="text-xs md:text-sm text-[#171717]/80 mt-1">Jewerly brand pop-up store</p>
+              </div>
             </div>
-            <div className="opacity-90 mt-2">
-              <h3 className="text-sm md:text-base font-semibold text-[#171717] tracking-wider leading-snug">3D Poster / 2026.Nov</h3>
-              <p className="text-xs md:text-sm text-[#171717]/80 mt-1">Jewerly brand pop-up store</p>
+
+            <div className="flex flex-col group w-[30vw] md:w-[22vw] ">
+              <div className="w-full aspect-[3/4] bg-[#f0f0f0] mb-4 shadow-lg overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-500 relative">
+                <span className="absolute inset-0 flex items-center justify-center font-mono text-xs opacity-50 p-2 text-center text-black">src="/images/monochrome.jpg"</span>
+              </div>
+              <div className="opacity-90 mt-2">
+                <h3 className="text-sm md:text-base font-semibold text-[#171717] tracking-wider leading-snug">Monochrome Poster / 2025.Oct</h3>
+                <p className="text-xs md:text-sm text-[#171717]/80 mt-1">Jeju stone park art exhibition</p>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col group w-[30vw] md:w-[22vw] ">
-            <div className="w-full aspect-[3/4] bg-[#f0f0f0] mb-4 shadow-lg overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-500 relative">
-              <span className="absolute inset-0 flex items-center justify-center font-mono text-xs opacity-50 p-2 text-center text-black">src="/images/monochrome.jpg"</span>
+          {/* Row 2: Motion Poster */}
+          <div className="w-full flex justify-center items-center px-[3vw] md:px-[10vw] mt-[5vh]">
+            <div className="flex flex-col items-end pb-8 pr-6 md:pr-12 w-[40vw] md:w-[35vw]">
+              <h3 className="text-sm md:text-base font-semibold text-[#171717] tracking-wider leading-snug text-right">Motion Poster / 2026.Dec</h3>
+              <p className="text-xs md:text-sm text-[#171717]/80 mt-1 text-right">Youngpoong bookstore Campaign</p>
             </div>
-            <div className="opacity-90 mt-2">
-              <h3 className="text-sm md:text-base font-semibold text-[#171717] tracking-wider leading-snug">Monochrome Poster / 2025.Oct</h3>
-              <p className="text-xs md:text-sm text-[#171717]/80 mt-1">Jeju stone park art exhibition</p>
+            <div className="flex flex-col group w-[35vw] md:w-[25vw]">
+              <div className="w-full aspect-[1/2] bg-[#e0f7fa] shadow-lg overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-500 relative">
+                <span className="absolute inset-0 flex items-center justify-center font-mono text-xs opacity-50 p-2 text-center text-black">src="/images/motion.jpg"</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Row 2: Motion Poster */}
-        <div className="w-full flex justify-center items-center px-[3vw] md:px-[10vw] mt-[5vh]">
-          <div className="flex flex-col items-end pb-8 pr-6 md:pr-12 w-[40vw] md:w-[35vw]">
-            <h3 className="text-sm md:text-base font-semibold text-[#171717] tracking-wider leading-snug text-right">Motion Poster / 2026.Dec</h3>
-            <p className="text-xs md:text-sm text-[#171717]/80 mt-1 text-right">Youngpoong bookstore Campaign</p>
-          </div>
-          <div className="flex flex-col group w-[35vw] md:w-[25vw]">
-            <div className="w-full aspect-[1/2] bg-[#e0f7fa] shadow-lg overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-500 relative">
-              <span className="absolute inset-0 flex items-center justify-center font-mono text-xs opacity-50 p-2 text-center text-black">src="/images/motion.jpg"</span>
+          {/* Row 3: MV Trailer */}
+          <div className="w-full flex justify-start items-end px-[5vw] md:px-[8vw] mt-[10vh]">
+            <div className="flex flex-col group w-[75vw] md:w-[60vw]">
+              <div className="w-full aspect-[16/9] bg-[#1a1a1a] shadow-lg overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-500 relative">
+                <span className="absolute inset-0 flex items-center justify-center font-mono text-[10px] md:text-xs opacity-60 text-white p-2 text-center">src="/images/simulacra.jpg"</span>
+              </div>
+            </div>
+            <div className="flex flex-col pl-6 md:pl-12 pb-[1%] md:pb-[3%]">
+              <h3 className="text-sm md:text-base font-semibold text-[#171717] tracking-wider leading-snug whitespace-nowrap">MV Trailer / 2026.July</h3>
+              <p className="text-xs md:text-sm text-[#171717]/80 mt-1">SIMULACRA</p>
             </div>
           </div>
-        </div>
 
-        {/* Row 3: MV Trailer */}
-        <div className="w-full flex justify-start items-end px-[5vw] md:px-[8vw] mt-[10vh]">
-          <div className="flex flex-col group w-[75vw] md:w-[60vw]">
-            <div className="w-full aspect-[16/9] bg-[#1a1a1a] shadow-lg overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-500 relative">
-              <span className="absolute inset-0 flex items-center justify-center font-mono text-[10px] md:text-xs opacity-60 text-white p-2 text-center">src="/images/simulacra.jpg"</span>
-            </div>
-          </div>
-          <div className="flex flex-col pl-6 md:pl-12 pb-[1%] md:pb-[3%]">
-            <h3 className="text-sm md:text-base font-semibold text-[#171717] tracking-wider leading-snug whitespace-nowrap">MV Trailer / 2026.July</h3>
-            <p className="text-xs md:text-sm text-[#171717]/80 mt-1">SIMULACRA</p>
-          </div>
-        </div>
+        </section>
+      )}
 
-      </section>
+      {/* New Work Page Layout (week.3) */}
+      {activePage === 'Work.' && (
+        <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
+          <div className="w-full max-w-[1200px] mx-auto flex flex-col">
+            <h2
+              className="text-3xl md:text-[45px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
+              style={{ fontFamily: '"Futura", "Trebuchet MS", sans-serif' }}
+            >
+              week.3
+            </h2>
+            <div className="w-full h-[50vh] md:h-[65vh] bg-[#d0d0d0] shadow-sm"></div>
+          </div>
+        </section>
+      )}
+
+      {/* Profile Page Content Placeholder */}
+      {activePage === 'Profile.' && (
+        <section className="relative w-full min-h-screen max-w-screen-xl mx-auto flex flex-col items-center justify-center pt-32 pb-32 opacity-100 animate-fade-in">
+          <div className="w-[80vw] md:w-[50vw] bg-[#ffffff] aspect-[4/3] shadow-lg flex items-center justify-center">
+            <p className="text-[#171717] font-mono text-sm opacity-50">Profile / About Me (프로필 내용 채우기)</p>
+          </div>
+        </section>
+      )}
 
       {/* 4. Sliding Sidebar Menu */}
       <div
