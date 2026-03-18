@@ -174,12 +174,12 @@ function App() {
         <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
           <div className="w-full max-w-[1200px] mx-auto flex flex-col">
             <h2
-              className="text-3xl md:text-[45px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
+              className="text-3xl md:text-[40px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
               style={{ fontFamily: '"Futura", "Trebuchet MS", sans-serif' }}
             >
               week.3
             </h2>
-            <div className="w-full h-[65vh] md:h-[80vh] bg-[#ffffff] shadow-sm overflow-hidden">
+            <div className="w-full h-[75vh] md:h-[80vh] bg-[#ffffff] shadow-sm overflow-hidden">
               <iframe
                 src="/week3.pdf"
                 className="w-full h-full border-none"
