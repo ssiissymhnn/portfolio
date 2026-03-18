@@ -179,7 +179,15 @@ function App() {
             >
               week.3
             </h2>
-            <div className="w-full h-[50vh] md:h-[65vh] bg-[#d0d0d0] shadow-sm"></div>
+            <div className="w-full h-[65vh] md:h-[80vh] bg-[#ffffff] shadow-sm overflow-hidden mix-blend-multiply">
+              <iframe
+                src="/week3.pdf"
+                className="w-full h-full border-none"
+                title="Week 3 PDF"
+              >
+                <p className="p-4 text-center">이 브라우저에서는 PDF를 미리 볼 수 없습니다. <a href="/week3.pdf" className="text-blue-500 underline">다운로드</a></p>
+              </iframe>
+            </div>
           </div>
         </section>
       )}
