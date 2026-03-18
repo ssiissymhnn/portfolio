@@ -179,7 +179,7 @@ function App() {
             >
               week.3
             </h2>
-            <div className="w-full h-[65vh] md:h-[80vh] bg-[#ffffff] shadow-sm overflow-hidden mix-blend-multiply">
+            <div className="w-full h-[65vh] md:h-[80vh] bg-[#ffffff] shadow-sm overflow-hidden">
               <iframe
                 src="/week3.pdf"
                 className="w-full h-full border-none"
