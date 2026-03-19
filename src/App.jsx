@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // Top cluster items (no text, absolute positions relative to the first 100vh screen)
 const clusterItems = [
@@ -16,10 +16,38 @@ function App() {
   const [isHovered, setIsHovered] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activePage, setActivePage] = useState('Home.');
+  const [showStickyCherry, setShowStickyCherry] = useState(false);
+  const [stickyHovered, setStickyHovered] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show if not on Home, or if scrolled past 30vh
+      if (activePage !== 'Home.') {
+        setShowStickyCherry(true);
+      } else {
+        if (window.scrollY > window.innerHeight * 0.3) {
+          setShowStickyCherry(true);
+        } else {
+          setShowStickyCherry(false);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check on load
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [activePage]);
 
   const toggleGallery = () => {
     setIsRevealed(!isRevealed);
     setIsHovered(false);
+  };
+
+  const handleStickyClick = () => {
+    setActivePage('Home.');
+    setIsRevealed(false);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setStickyHovered(false);
   };
 
   const handleNavClick = (page) => {
@@ -48,9 +76,9 @@ function App() {
           className="flex flex-col gap-[5.5px] p-2 mt-11 mr-11 group pointer-events-auto transition-opacity z-[10001]"
           aria-label="Menu"
         >
-          <span className={`block w-5 h-[2.5px] transition-colors duration-300 ${isMenuOpen ? 'bg-[#47A0D8]' : 'bg-[#171717] group-hover:bg-[#47A0D8]'}`}></span>
-          <span className={`block w-5 h-[2.5px] transition-colors duration-300 ${isMenuOpen ? 'bg-[#47A0D8]' : 'bg-[#171717] group-hover:bg-[#47A0D8]'}`}></span>
-          <span className={`block w-5 h-[2.5px] transition-colors duration-300 ${isMenuOpen ? 'bg-[#47A0D8]' : 'bg-[#171717] group-hover:bg-[#47A0D8]'}`}></span>
+          <span className={`block w-5 h-[2.5px] transition-colors duration-300 ${isMenuOpen ? 'bg-[#34A1E5]' : 'bg-[#171717] group-hover:bg-[#34A1E5]'}`}></span>
+          <span className={`block w-5 h-[2.5px] transition-colors duration-300 ${isMenuOpen ? 'bg-[#34A1E5]' : 'bg-[#171717] group-hover:bg-[#34A1E5]'}`}></span>
+          <span className={`block w-5 h-[2.5px] transition-colors duration-300 ${isMenuOpen ? 'bg-[#34A1E5]' : 'bg-[#171717] group-hover:bg-[#34A1E5]'}`}></span>
         </button>
       </header>
 
@@ -169,24 +197,107 @@ function App() {
         </section>
       )}
 
-      {/* New Work Page Layout (week.3) */}
+      {/* New Work Overview Page (Image 1) */}
       {activePage === 'Work.' && (
+        <section className="relative w-full min-h-screen flex items-center justify-center pt-20 pb-32 animate-fade-in">
+          <div className="flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-16 md:gap-[8vw] w-full px-10">
+            {/* 1. Digital Design */}
+            <div className="group cursor-pointer">
+              <p
+                style={{ fontFamily: '"Poltawski Nowy", serif', fontSize: '30px', color: '#000000' }}
+                className="transition-opacity group-hover:opacity-50"
+              >
+                Digital Design
+              </p>
+            </div>
+            {/* 2. Data Visualization */}
+            <div
+              className="flex flex-col items-center group cursor-pointer"
+              onClick={() => {
+                setActivePage('WorkList');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+            >
+              <p
+                style={{ fontFamily: '"Poltawski Nowy", serif', fontSize: '29px', color: '#000000' }}
+                className="transition-opacity group-hover:opacity-50 leading-snug"
+              >
+                Data Visualization &<br />Information Design
+              </p>
+              <p
+                style={{ fontFamily: '"Poltawski Nowy", serif', fontSize: '24px', color: '#000000' }}
+                className="transition-opacity group-hover:opacity-50 mt-1"
+              >
+                (2026)
+              </p>
+            </div>
+            {/* 3. Film Design */}
+            <div className="group cursor-pointer">
+              <p
+                style={{ fontFamily: '"Poltawski Nowy", serif', fontSize: '30px', color: '#000000' }}
+                className="transition-opacity group-hover:opacity-50 leading-snug"
+              >
+                Film Design<br />& Animation
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Work List Page - Numbers Grid (Image 2) */}
+      {activePage === 'WorkList' && (
+        <section className="relative w-full min-h-screen flex items-center justify-center pt-32 pb-32 animate-fade-in">
+          {/* A grid of 4x4 numbers */}
+          <div className="grid grid-cols-4 gap-y-20 gap-x-20 md:gap-x-40 w-max mx-auto text-center">
+            {[...Array(16)].map((_, i) => {
+              const num = i + 1;
+              return (
+                <div
+                  key={num}
+                  className="cursor-pointer group flex justify-center items-center"
+                  onClick={() => {
+                    setActivePage(`Week${num}`);
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                  }}
+                >
+                  <span
+                    className="text-[#919444] italic transition-all duration-300 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
+                    style={{
+                      fontFamily: '"Poltawski Nowy", serif',
+                      fontSize: '48px',
+                    }}
+                  >
+                    {num}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Weekly Details Page (Image 3) */}
+      {activePage.startsWith('Week') && (
         <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
           <div className="w-full max-w-[1200px] mx-auto flex flex-col">
             <h2
               className="text-3xl md:text-[40px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
               style={{ fontFamily: '"Futura", "Trebuchet MS", sans-serif' }}
             >
-              week.3
+              week.{activePage.replace('Week', '')}
             </h2>
-            <div className="w-full h-[75vh] md:h-[80vh] bg-[#ffffff] shadow-sm overflow-hidden">
-              <iframe
-                src="/week3.pdf"
-                className="w-full h-full border-none"
-                title="Week 3 PDF"
-              >
-                <p className="p-4 text-center">이 브라우저에서는 PDF를 미리 볼 수 없습니다. <a href="/week3.pdf" className="text-blue-500 underline">다운로드</a></p>
-              </iframe>
+            <div className={`w-full h-[75vh] md:h-[80vh] shadow-sm overflow-hidden flex items-center justify-center ${activePage === 'Week3' ? 'bg-[#ffffff]' : 'bg-[#dadada]'}`}>
+              {activePage === 'Week3' ? (
+                <iframe
+                  src="/week3.pdf"
+                  className="w-full h-full border-none"
+                  title="Week 3 PDF"
+                >
+                  <p className="p-4 text-center">이 브라우저에서는 PDF를 미리 볼 수 없습니다. <a href="/week3.pdf" className="text-blue-500 underline">다운로드</a></p>
+                </iframe>
+              ) : (
+                <p className="text-[#171717]/50 font-mono">Week {activePage.replace('Week', '')} Content Area (Placeholder)</p>
+              )}
             </div>
           </div>
         </section>
@@ -203,10 +314,10 @@ function App() {
 
       {/* 4. Sliding Sidebar Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-full md:w-[25vw] bg-[#ADCCDF] z-[20000] shadow-2xl transform transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 h-full w-full md:w-[25vw] bg-[#90D3FD] z-[20000] shadow-2xl transform transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <button
-          className="absolute top-10 right-10 text-[#47A0D8] hover:opacity-70 transition-opacity mr-7 py-4"
+          className="absolute top-10 right-10 text-[#34A1E5] hover:opacity-70 transition-opacity mr-7 py-4"
           onClick={() => setIsMenuOpen(false)}
           aria-label="Close Menu"
         >
@@ -220,7 +331,7 @@ function App() {
             <button
               key={page}
               onClick={() => handleNavClick(page)}
-              className={` cursor-pointer transition-colors duration-100 tracking-wide hover:text-[#47A0D8] origin-left ${activePage === page ? 'text-[#47A0D8]' : 'text-[#ffffff]'}`}
+              className={` cursor-pointer transition-colors duration-100 tracking-wide hover:text-[#34A1E5] origin-left ${activePage === page ? 'text-[#34A1E5]' : 'text-[#ffffff]'}`}
             >
               {page}
             </button>
@@ -228,24 +339,30 @@ function App() {
         </nav>
       </div>
 
+      {/* 5. Sticky Bottom Right Cherry */}
+      <div
+        className={`fixed bottom-[5vh] right-[4vw] z-[99999] cursor-pointer transition-all duration-500 hover:scale-110 active:scale-95 ${showStickyCherry ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none translate-y-10'}`}
+        onClick={handleStickyClick}
+        onMouseEnter={() => setStickyHovered(true)}
+        onMouseLeave={() => setStickyHovered(false)}
+      >
+        <div className="relative w-20 h-20 md:w-28 md:h-28">
+          <img
+            src="/cc.png"
+            alt="Sticky Cherry Default"
+            className={`absolute inset-0 w-full h-full object-contain drop-shadow-2xl transition-opacity duration-300 ${!stickyHovered ? 'opacity-100' : 'opacity-0'}`}
+          />
+          <img
+            src="/cc_cut.png"
+            alt="Sticky Cherry Cut Hover"
+            className={`absolute inset-0 w-full h-full object-contain drop-shadow-2xl transition-opacity duration-300 ${stickyHovered ? 'opacity-100' : 'opacity-0'}`}
+          />
+        </div>
+      </div>
+
     </div>
   );
 }
 
 export default App;
-< !doctype html >
-  <html lang="ko">
-    <head>
-      <meta charset="UTF-8" />
-      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-      <title>SISI</title>
-
-    </head>
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.jsx"></script>
-    </body>
-  </html>
 
