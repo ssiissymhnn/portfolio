@@ -200,7 +200,7 @@ function App() {
       {/* New Work Overview Page (Image 1) */}
       {activePage === 'Work.' && (
         <section className="relative w-full min-h-screen flex items-center justify-center pt-20 pb-32 animate-fade-in">
-          <div className="flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-16 md:gap-[8vw] w-full px-10">
+          <div className="flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-25 md:gap-[16vw] w-full px-10">
             {/* 1. Digital Design */}
             <div className="group cursor-pointer">
               <p
@@ -260,7 +260,7 @@ function App() {
             >
               ←
             </button>
-            <div className="grid grid-cols-4 gap-y-25 gap-x-25 md:gap-x-50 w-full text-center">
+            <div className="grid grid-cols-4 gap-y-20 gap-x-25 md:gap-x-50 w-full text-center">
               {[...Array(16)].map((_, i) => {
                 const num = i + 1;
                 return (
@@ -276,7 +276,7 @@ function App() {
                       className="text-[#919444] transition-all duration-300 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
                       style={{
                         fontFamily: '"Poltawski Nowy Italic", serif',
-                        fontSize: '48px',
+                        fontSize: '40px'
                       }}
                     >
                       {num}
