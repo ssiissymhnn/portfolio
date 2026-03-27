@@ -248,30 +248,43 @@ function App() {
       {activePage === 'WorkList' && (
         <section className="relative w-full min-h-screen flex items-center justify-center pt-32 pb-32 animate-fade-in">
           {/* A grid of 4x4 numbers */}
-          <div className="grid grid-cols-4 gap-y-20 gap-x-20 md:gap-x-40 w-max mx-auto text-center">
-            {[...Array(16)].map((_, i) => {
-              const num = i + 1;
-              return (
-                <div
-                  key={num}
-                  className="cursor-pointer group flex justify-center items-center"
-                  onClick={() => {
-                    setActivePage(`Week${num}`);
-                    window.scrollTo({ top: 0, behavior: 'instant' });
-                  }}
-                >
-                  <span
-                    className="text-[#919444] italic transition-all duration-300 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
-                    style={{
-                      fontFamily: '"Poltawski Nowy", serif',
-                      fontSize: '48px',
+          <div className="relative w-max mx-auto">
+            <button
+              onClick={() => {
+                setActivePage('Work.');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+              className="absolute right-[100%] mr-[5vw] md:mr-[8vw] top-[8px] md:top-[10px] text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light"
+              style={{ fontFamily: '"Poltawski Nowy", serif' }}
+              aria-label="Go Back"
+            >
+              ←
+            </button>
+            <div className="grid grid-cols-4 gap-y-25 gap-x-25 md:gap-x-50 w-full text-center">
+              {[...Array(16)].map((_, i) => {
+                const num = i + 1;
+                return (
+                  <div
+                    key={num}
+                    className="cursor-pointer group flex justify-center items-center"
+                    onClick={() => {
+                      setActivePage(`Week${num}`);
+                      window.scrollTo({ top: 0, behavior: 'instant' });
                     }}
                   >
-                    {num}
-                  </span>
-                </div>
-              )
-            })}
+                    <span
+                      className="text-[#919444] transition-all duration-300 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
+                      style={{
+                        fontFamily: '"Poltawski Nowy Italic", serif',
+                        fontSize: '48px',
+                      }}
+                    >
+                      {num}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </section>
       )}
@@ -280,20 +293,31 @@ function App() {
       {activePage.startsWith('Week') && (
         <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
           <div className="w-full max-w-[1200px] mx-auto flex flex-col">
+            <button
+              onClick={() => {
+                setActivePage('WorkList');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+              className="self-start text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light mb-[2vh] md:mb-[3vh]"
+              style={{ fontFamily: '"Poltawski Nowy", serif' }}
+              aria-label="Go Back"
+            >
+              ←
+            </button>
             <h2
               className="text-3xl md:text-[40px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
               style={{ fontFamily: '"Futura", "Trebuchet MS", sans-serif' }}
             >
               week.{activePage.replace('Week', '')}
             </h2>
-            <div className={`w-full h-[75vh] md:h-[80vh] shadow-sm overflow-hidden flex items-center justify-center ${activePage === 'Week3' ? 'bg-[#ffffff]' : 'bg-[#dadada]'}`}>
-              {activePage === 'Week3' ? (
+            <div className={`w-full h-[75vh] md:h-[80vh] shadow-sm overflow-hidden flex items-center justify-center ${['Week3', 'Week4'].includes(activePage) ? 'bg-[#ffffff]' : 'bg-[#dadada]'}`}>
+              {['Week3', 'Week4'].includes(activePage) ? (
                 <iframe
-                  src="/week3.pdf"
+                  src={`/${activePage.toLowerCase()}.pdf`}
                   className="w-full h-full border-none"
-                  title="Week 3 PDF"
+                  title={`${activePage} PDF`}
                 >
-                  <p className="p-4 text-center">이 브라우저에서는 PDF를 미리 볼 수 없습니다. <a href="/week3.pdf" className="text-blue-500 underline">다운로드</a></p>
+                  <p className="p-4 text-center">이 브라우저에서는 PDF를 미리 볼 수 없습니다. <a href={`/${activePage.toLowerCase()}.pdf`} className="text-blue-500 underline">다운로드</a></p>
                 </iframe>
               ) : (
                 <p className="text-[#171717]/50 font-mono">Week {activePage.replace('Week', '')} Content Area (Placeholder)</p>
