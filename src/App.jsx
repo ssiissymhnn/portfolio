@@ -1,4 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 // Top cluster items (no text, absolute positions relative to the first 100vh screen)
 const clusterItems = [
@@ -12,6 +17,12 @@ const clusterItems = [
 ];
 
 function App() {
+  const [numPages, setNumPages] = useState(null);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+
   const [isRevealed, setIsRevealed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -310,15 +321,51 @@ function App() {
             >
               week.{activePage.replace('Week', '')}
             </h2>
-            <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${['Week3', 'Week4'].includes(activePage) ? 'bg-transparet' : 'bg-[#dadada] shadow-sm '}`}>
+            <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${['Week3', 'Week4'].includes(activePage) ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
               {['Week3', 'Week4'].includes(activePage) ? (
-                <iframe
-                  src={`/${activePage.toLowerCase()}.pdf`}
-                  className="w-full h-full border-none"
-                  title={`${activePage} PDF`}
-                >
-                  <p className="p-4 text-center">이 브라우저에서는 PDF를 미리 볼 수 없습니다. <a href={`/${activePage.toLowerCase()}.pdf`} className="text-blue-500 underline">다운로드</a></p>
-                </iframe>
+                <div className="w-full h-full overflow-y-auto no-scrollbar bg-transparent custom-pdf-container relative">
+                  <style>{`
+                    .custom-pdf-container::-webkit-scrollbar {
+                      display: none;
+                    }
+                    .custom-pdf-container {
+                      -ms-overflow-style: none;
+                      scrollbar-width: none;
+                    }
+                    .custom-pdf-container .react-pdf__Document {
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      width: 100%;
+                    }
+                    .custom-pdf-container .react-pdf__Page {
+                      margin-bottom: 0 !important;
+                      width: 100% !important;
+                      display: flex !important;
+                      justify-content: center !important;
+                    }
+                    .custom-pdf-container .react-pdf__Page__canvas {
+                      margin: 0 !important;
+                      display: block !important;
+                      width: 100% !important;
+                      height: auto !important;
+                    }
+                  `}</style>
+                  <Document
+                    file={`/${activePage.toLowerCase()}.pdf`}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                    loading={<p className="text-center mt-10 text-[#171717]/50 font-mono">Loading PDF...</p>}
+                  >
+                    {Array.from(new Array(numPages || 0), (el, index) => (
+                      <Page
+                        key={`page_${index + 1}`}
+                        pageNumber={index + 1}
+                        renderTextLayer={false}
+                        renderAnnotationLayer={false}
+                      />
+                    ))}
+                  </Document>
+                </div>
               ) : (
                 <p className="text-[#171717]/50 font-mono">Week {activePage.replace('Week', '')} Content Area (Placeholder)</p>
               )}
