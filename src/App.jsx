@@ -248,7 +248,7 @@ function App() {
       {activePage === 'WorkList' && (
         <section className="relative w-full min-h-screen flex items-center justify-center pt-32 pb-32 animate-fade-in">
           {/* A grid of 4x4 numbers */}
-          <div className="relative w-max mx-auto">
+          <div className="relative w-max mx-auto right-8">
             <button
               onClick={() => {
                 setActivePage('Work.');
@@ -260,7 +260,7 @@ function App() {
             >
               ←
             </button>
-            <div className="grid grid-cols-4 gap-y-20 gap-x-25 md:gap-x-50 w-full text-center">
+            <div className="grid grid-cols-4 gap-y-25 gap-x-25 md:gap-x-50 w-full text-center">
               {[...Array(16)].map((_, i) => {
                 const num = i + 1;
                 return (
@@ -273,9 +273,9 @@ function App() {
                     }}
                   >
                     <span
-                      className="text-[#919444] transition-all duration-300 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
+                      className="text-[#919444] Italic transition-all duration-300 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
                       style={{
-                        fontFamily: '"Poltawski Nowy Italic", serif',
+                        fontFamily: '"Poltawski Nowy", serif',
                         fontSize: '40px'
                       }}
                     >
