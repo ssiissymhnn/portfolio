@@ -200,7 +200,7 @@ function App() {
       {/* New Work Overview Page (Image 1) */}
       {activePage === 'Work.' && (
         <section className="relative w-full min-h-screen flex items-center justify-center pt-20 pb-32 animate-fade-in">
-          <div className="flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-25 md:gap-[16vw] w-full px-10">
+          <div className="relative right-5 flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-25 md:gap-[16vw] w-full px-10">
             {/* 1. Digital Design */}
             <div className="group cursor-pointer">
               <p
@@ -248,7 +248,7 @@ function App() {
       {activePage === 'WorkList' && (
         <section className="relative w-full min-h-screen flex items-center justify-center pt-32 pb-32 animate-fade-in">
           {/* A grid of 4x4 numbers */}
-          <div className="relative w-max mx-auto right-8">
+          <div className="relative w-max mx-auto right-5">
             <button
               onClick={() => {
                 setActivePage('Work.');
@@ -310,7 +310,7 @@ function App() {
             >
               week.{activePage.replace('Week', '')}
             </h2>
-            <div className={`w-full h-[75vh] md:h-[80vh] shadow-sm overflow-hidden flex items-center justify-center ${['Week3', 'Week4'].includes(activePage) ? 'bg-[#ffffff]' : 'bg-[#dadada]'}`}>
+            <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${['Week3', 'Week4'].includes(activePage) ? 'bg-transparet' : 'bg-[#dadada] shadow-sm '}`}>
               {['Week3', 'Week4'].includes(activePage) ? (
                 <iframe
                   src={`/${activePage.toLowerCase()}.pdf`}
