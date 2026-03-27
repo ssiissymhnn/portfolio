@@ -260,7 +260,7 @@ function App() {
             >
               ←
             </button>
-            <div className="grid grid-cols-4 gap-y-25 gap-x-25 md:gap-x-50 w-full text-center">
+            <div className="grid grid-cols-4 gap-y-25 gap-x-30 md:gap-x-60 w-full text-center">
               {[...Array(16)].map((_, i) => {
                 const num = i + 1;
                 return (
@@ -273,7 +273,7 @@ function App() {
                     }}
                   >
                     <span
-                      className="text-[#919444] Italic transition-all duration-300 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
+                      className="text-[#919444] Italic transition-all duration-100 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
                       style={{
                         fontFamily: '"Poltawski Nowy", serif',
                         fontSize: '40px'
