@@ -211,7 +211,7 @@ function App() {
       {/* New Work Overview Page (Image 1) */}
       {activePage === 'Work.' && (
         <section className="relative w-full min-h-screen flex items-center justify-center pt-20 pb-32 animate-fade-in">
-          <div className="relative right-5 flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-25 md:gap-[16vw] w-full px-10">
+          <div className="relative right-2 flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-25 md:gap-[16vw] w-full px-10">
             {/* 1. Digital Design */}
             <div className="group cursor-pointer">
               <p
@@ -259,7 +259,7 @@ function App() {
       {activePage === 'WorkList' && (
         <section className="relative w-full min-h-screen flex items-center justify-center pt-32 pb-32 animate-fade-in">
           {/* A grid of 4x4 numbers */}
-          <div className="relative w-max mx-auto right-5">
+          <div className="relative w-max mx-auto right-2">
             <button
               onClick={() => {
                 setActivePage('Work.');
