@@ -303,13 +303,53 @@ function App() {
         </section>
       )}
 
+      {/* Week 4 Select Page (Personal vs Team) */}
+      {activePage === 'Week4' && (
+        <section className="relative w-full min-h-screen flex items-center justify-center pt-20 pb-32 animate-fade-in">
+          <div className="relative right-2 flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-25 md:gap-[16vw] w-full px-10">
+            <div
+              className="group cursor-pointer"
+              onClick={() => {
+                setActivePage('Week4_1');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+            >
+              <p
+                style={{ fontFamily: '"Poltawski Nowy", serif', fontSize: '30px', color: '#000000' }}
+                className="transition-opacity group-hover:opacity-50"
+              >
+                Personal
+              </p>
+            </div>
+            <div
+              className="group cursor-pointer"
+              onClick={() => {
+                setActivePage('Week4_2');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+            >
+              <p
+                style={{ fontFamily: '"Poltawski Nowy", serif', fontSize: '30px', color: '#000000' }}
+                className="transition-opacity group-hover:opacity-50"
+              >
+                Team
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Weekly Details Page (Image 3) */}
-      {activePage.startsWith('Week') && (
+      {activePage.startsWith('Week') && activePage !== 'Week4' && (
         <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
           <div className="w-full max-w-[1200px] mx-auto flex flex-col">
             <button
               onClick={() => {
-                setActivePage('WorkList');
+                if (activePage === 'Week4_1' || activePage === 'Week4_2') {
+                  setActivePage('Week4');
+                } else {
+                  setActivePage('WorkList');
+                }
                 window.scrollTo({ top: 0, behavior: 'instant' });
               }}
               className="self-start text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light mb-[2vh] md:mb-[3vh]"
@@ -322,10 +362,10 @@ function App() {
               className="text-3xl md:text-[40px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
               style={{ fontFamily: '"Futura", "Trebuchet MS", sans-serif' }}
             >
-              week.{activePage.replace('Week', '')}
+              week.{activePage.replace('Week', '').replace('_1', '').replace('_2', '')}
             </h2>
-            <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${['Week3', 'Week4', 'Week5', 'Week6'].includes(activePage) ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
-              {['Week3', 'Week4', 'Week5', 'Week6'].includes(activePage) ? (
+            <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${['Week2', 'Week3', 'Week5', 'Week6', 'Week4_1', 'Week4_2'].includes(activePage) ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
+              {['Week2', 'Week3', 'Week5', 'Week6', 'Week4_1', 'Week4_2'].includes(activePage) ? (
                 <div className="w-full h-full overflow-y-auto no-scrollbar bg-transparent custom-pdf-container relative">
                   <style>{`
                     .custom-pdf-container::-webkit-scrollbar {
@@ -370,7 +410,7 @@ function App() {
                   </Document>
                 </div>
               ) : (
-                <p className="text-[#171717]/50 font-mono">Week {activePage.replace('Week', '')} Content Area (Placeholder)</p>
+                <p className="text-[#171717]/50 font-mono">Week {activePage.replace('Week', '').replace('_1', '').replace('_2', '')} Content Area (Placeholder)</p>
               )}
             </div>
           </div>
