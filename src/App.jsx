@@ -364,8 +364,8 @@ function App() {
             >
               week.{activePage.replace('Week', '').replace('_1', '').replace('_2', '')}
             </h2>
-            <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${['Week2', 'Week3', 'Week5', 'Week6', 'Week4_1', 'Week4_2'].includes(activePage) ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
-              {['Week2', 'Week3', 'Week5', 'Week6', 'Week4_1', 'Week4_2'].includes(activePage) ? (
+            <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${['Week2', 'Week3', 'Week5', 'Week6', 'Week8', 'Week4_1', 'Week4_2'].includes(activePage) ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
+              {['Week2', 'Week3', 'Week5', 'Week6', 'Week8', 'Week4_1', 'Week4_2'].includes(activePage) ? (
                 <div className="w-full h-full overflow-y-auto no-scrollbar bg-transparent custom-pdf-container relative">
                   <style>{`
                     .custom-pdf-container::-webkit-scrollbar {
