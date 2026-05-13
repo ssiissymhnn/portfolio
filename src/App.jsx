@@ -52,6 +52,11 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [activePage]);
 
+  // Reset PDF page count when changing pages to ensure new PDF loads correctly
+  useEffect(() => {
+    setNumPages(null);
+  }, [activePage]);
+
   const toggleGallery = () => {
     setIsRevealed(!isRevealed);
     setIsHovered(false);
@@ -276,6 +281,28 @@ function App() {
             </button>
             <div className="grid grid-cols-4 gap-y-25 gap-x-30 md:gap-x-60 w-full text-center">
               {[...Array(16)].map((_, i) => {
+                if (i === 6) {
+                  return (
+                    <div
+                      key="midterm"
+                      className="cursor-pointer group flex justify-center items-center"
+                      onClick={() => {
+                        setActivePage('Midterm');
+                        window.scrollTo({ top: 0, behavior: 'instant' });
+                      }}
+                    >
+                      <span
+                        className="text-[#919444] Italic transition-all duration-100 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
+                        style={{
+                          fontFamily: '"Poltawski Nowy", serif',
+                          fontSize: '40px'
+                        }}
+                      >
+                        Midterm
+                      </span>
+                    </div>
+                  );
+                }
                 const num = i + 1;
                 return (
                   <div
@@ -296,7 +323,7 @@ function App() {
                       {num}
                     </span>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
@@ -339,83 +366,90 @@ function App() {
         </section>
       )}
 
-      {/* Weekly Details Page (Image 3) */}
-      {activePage.startsWith('Week') && activePage !== 'Week4' && (
-        <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
-          <div className="w-full max-w-[1200px] mx-auto flex flex-col">
-            <button
-              onClick={() => {
-                if (activePage === 'Week4_1' || activePage === 'Week4_2') {
-                  setActivePage('Week4');
-                } else {
-                  setActivePage('WorkList');
-                }
-                window.scrollTo({ top: 0, behavior: 'instant' });
-              }}
-              className="self-start text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light mb-[2vh] md:mb-[3vh]"
-              style={{ fontFamily: '"Poltawski Nowy", serif' }}
-              aria-label="Go Back"
-            >
-              ←
-            </button>
-            <h2
-              className="text-3xl md:text-[40px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
-              style={{ fontFamily: '"Futura", "Trebuchet MS", sans-serif' }}
-            >
-              week.{activePage.replace('Week', '').replace('_1', '').replace('_2', '')}
-            </h2>
-            <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${['Week2', 'Week3', 'Week5', 'Week6', 'Week8', 'Week4_1', 'Week4_2'].includes(activePage) ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
-              {['Week2', 'Week3', 'Week5', 'Week6', 'Week8', 'Week4_1', 'Week4_2'].includes(activePage) ? (
-                <div className="w-full h-full overflow-y-auto no-scrollbar bg-transparent custom-pdf-container relative">
-                  <style>{`
-                    .custom-pdf-container::-webkit-scrollbar {
-                      display: none;
-                    }
-                    .custom-pdf-container {
-                      -ms-overflow-style: none;
-                      scrollbar-width: none;
-                    }
-                    .custom-pdf-container .react-pdf__Document {
-                      display: flex;
-                      flex-direction: column;
-                      align-items: center;
-                      width: 100%;
-                    }
-                    .custom-pdf-container .react-pdf__Page {
-                      margin-bottom: 0 !important;
-                      width: 100% !important;
-                      display: flex !important;
-                      justify-content: center !important;
-                    }
-                    .custom-pdf-container .react-pdf__Page__canvas {
-                      margin: 0 !important;
-                      display: block !important;
-                      width: 100% !important;
-                      height: auto !important;
-                    }
-                  `}</style>
-                  <Document
-                    file={`/${activePage.toLowerCase()}.pdf`}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                    loading={<p className="text-center mt-10 text-[#171717]/50 font-mono">Loading PDF...</p>}
-                  >
-                    {Array.from(new Array(numPages || 0), (el, index) => (
-                      <Page
-                        key={`page_${index + 1}`}
-                        pageNumber={index + 1}
-                        renderTextLayer={false}
-                        renderAnnotationLayer={false}
-                      />
-                    ))}
-                  </Document>
-                </div>
-              ) : (
-                <p className="text-[#171717]/50 font-mono">Week {activePage.replace('Week', '').replace('_1', '').replace('_2', '')} Content Area (Placeholder)</p>
-              )}
+      {((activePage.startsWith('Week') && activePage !== 'Week4') || activePage === 'Midterm') && (() => {
+        const pdfWeeks = ['Week2', 'Week3', 'Week4_1', 'Week4_2', 'Week5', 'Week6', 'Week8', 'Week9', 'Week10', 'Midterm'];
+        const isPdfPage = pdfWeeks.includes(activePage);
+        return (
+          <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
+            <div className="w-full max-w-[1200px] mx-auto flex flex-col">
+              <button
+                onClick={() => {
+                  if (activePage === 'Week4_1' || activePage === 'Week4_2') {
+                    setActivePage('Week4');
+                  } else {
+                    setActivePage('WorkList');
+                  }
+                  window.scrollTo({ top: 0, behavior: 'instant' });
+                }}
+                className="self-start text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light mb-[2vh] md:mb-[3vh]"
+                style={{ fontFamily: '"Poltawski Nowy", serif' }}
+                aria-label="Go Back"
+              >
+                ←
+              </button>
+              <h2
+                className="text-3xl md:text-[40px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
+                style={{ fontFamily: '"Futura", "Trebuchet MS", sans-serif' }}
+              >
+                {activePage === 'Midterm'
+                  ? 'Midterm'
+                  : `week.${activePage.replace('Week', '').replace('_1', '').replace('_2', '')}`}
+              </h2>
+              <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${isPdfPage ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
+                {isPdfPage ? (
+                  <div className="w-full h-full overflow-y-auto no-scrollbar bg-transparent custom-pdf-container relative">
+                    <style>{`
+                      .custom-pdf-container::-webkit-scrollbar {
+                        display: none;
+                      }
+                      .custom-pdf-container {
+                        -ms-overflow-style: none;
+                        scrollbar-width: none;
+                      }
+                      .custom-pdf-container .react-pdf__Document {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        width: 100%;
+                      }
+                      .custom-pdf-container .react-pdf__Page {
+                        margin-bottom: 0 !important;
+                        width: 100% !important;
+                        display: flex !important;
+                        justify-content: center !important;
+                      }
+                      .custom-pdf-container .react-pdf__Page__canvas {
+                        margin: 0 !important;
+                        display: block !important;
+                        width: 100% !important;
+                        height: auto !important;
+                      }
+                    `}</style>
+                    <Document
+                      file={`/${activePage.toLowerCase()}.pdf`}
+                      onLoadSuccess={onDocumentLoadSuccess}
+                      loading={<p className="text-center mt-10 text-[#171717]/50 font-mono">Loading PDF...</p>}
+                      error={<p className="text-center mt-10 text-red-500 font-mono">Failed to load PDF ({activePage.toLowerCase()}.pdf).</p>}
+                      noData={<p className="text-center mt-10 text-[#171717]/50 font-mono">No PDF file specified.</p>}
+                    >
+                      {Array.from(new Array(numPages || 0), (el, index) => (
+                        <Page
+                          key={`page_${index + 1}`}
+                          pageNumber={index + 1}
+                          renderTextLayer={false}
+                          renderAnnotationLayer={false}
+                        />
+                      ))}
+                    </Document>
+                  </div>
+                ) : (
+                  <p className="text-[#171717]/50 font-mono">Week {activePage.replace('Week', '').replace('_1', '').replace('_2', '')} Content Area (Placeholder)</p>
+                )}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        );
+      })()}
 
       {/* Profile Page Content Placeholder */}
       {activePage === 'Profile.' && (
