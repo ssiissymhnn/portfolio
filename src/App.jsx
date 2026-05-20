@@ -367,7 +367,7 @@ function App() {
       )}
 
       {((activePage.startsWith('Week') && activePage !== 'Week4') || activePage === 'Midterm') && (() => {
-        const pdfWeeks = ['Week2', 'Week3', 'Week4_1', 'Week4_2', 'Week5', 'Week6', 'Week8', 'Week9', 'Week10', 'Midterm'];
+        const pdfWeeks = ['Week2', 'Week3', 'Week4_1', 'Week4_2', 'Week5', 'Week6', 'Week8', 'Week9', 'Week10', 'Week11', 'Midterm'];
         const isPdfPage = pdfWeeks.includes(activePage);
         return (
           <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
