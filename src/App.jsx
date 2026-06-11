@@ -403,7 +403,7 @@ function App() {
                 }
                 window.scrollTo({ top: 0, behavior: 'instant' });
               }}
-              className="fixed z-[500] top-[18vh] md:top-[22vh] left-[2vw] md:left-[3vw] text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light"
+              className="fixed z-[500] top-[16vh] md:top-[20vh] left-[3.5vw] md:left-[4.5vw] text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light"
               style={{ fontFamily: '"Poltawski Nowy", serif' }}
               aria-label="Go Back"
             >
@@ -436,7 +436,7 @@ function App() {
               {activePage === 'Week14' && (
                 <div className="w-full mt-[4vh] flex justify-center">
                   <video
-                    className="w-1/4 min-w-[180px] max-w-[300px]"
+                    className="w-[30%] min-w-[200px] max-w-[340px]"
                     controls
                     preload="metadata"
                     playsInline
