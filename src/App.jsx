@@ -422,30 +422,10 @@ function App() {
                   ? 'Student Exhibition'
                   : `week.${activePage.replace('Week', '').replace('_1', '').replace('_2', '')}`}
               </h2>
-              <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${isPdfPage ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
+              <div className={`w-full ${isPdfPage ? 'bg-transparent' : 'min-h-[40vh] bg-[#dadada] shadow-sm flex items-center justify-center'}`}>
                 {isPdfPage ? (
-                  <div className="w-full h-full overflow-y-auto bg-transparent custom-pdf-container relative">
+                  <div className="w-full custom-pdf-container relative">
                     <style>{`
-                      .custom-pdf-container {
-                        scrollbar-width: thin;
-                        scrollbar-color: #919444 #e8e9d0;
-                      }
-                      .custom-pdf-container::-webkit-scrollbar {
-                        display: block;
-                        width: 10px;
-                      }
-                      .custom-pdf-container::-webkit-scrollbar-track {
-                        background: #e8e9d0;
-                        border-radius: 9999px;
-                      }
-                      .custom-pdf-container::-webkit-scrollbar-thumb {
-                        background: #919444;
-                        border-radius: 9999px;
-                        border: 2px solid #e8e9d0;
-                      }
-                      .custom-pdf-container::-webkit-scrollbar-thumb:hover {
-                        background: #454719;
-                      }
                       .custom-pdf-container .react-pdf__Document {
                         display: flex;
                         flex-direction: column;
@@ -490,6 +470,18 @@ function App() {
                   </p>
                 )}
               </div>
+              {activePage === 'Week14' && (
+                <div className="w-full mt-[4vh]">
+                  <video
+                    className="w-full"
+                    controls
+                    preload="metadata"
+                    playsInline
+                  >
+                    <source src="/final_reels.mp4" type="video/mp4" />
+                  </video>
+                </div>
+              )}
             </div>
           </section>
         );
