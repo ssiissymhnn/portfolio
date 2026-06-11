@@ -280,7 +280,7 @@ function App() {
               ←
             </button>
             <div className="grid grid-cols-4 gap-y-25 gap-x-30 md:gap-x-60 w-full text-center">
-              {[...Array(16)].map((_, i) => {
+              {[...Array(14)].map((_, i) => {
                 if (i === 6) {
                   return (
                     <div
@@ -320,7 +320,7 @@ function App() {
                         fontSize: '40px'
                       }}
                     >
-                      {num}
+                      {num === 14 ? 'Final' : num}
                     </span>
                   </div>
                 );
@@ -367,8 +367,9 @@ function App() {
       )}
 
       {((activePage.startsWith('Week') && activePage !== 'Week4') || activePage === 'Midterm') && (() => {
-        const pdfWeeks = ['Week2', 'Week3', 'Week4_1', 'Week4_2', 'Week5', 'Week6', 'Week8', 'Week9', 'Week10', 'Week11', 'Week12', 'Midterm'];
+        const pdfWeeks = ['Week2', 'Week3', 'Week4_1', 'Week4_2', 'Week5', 'Week6', 'Week8', 'Week9', 'Week10', 'Week11', 'Week12', 'Week13', 'Week14', 'Midterm'];
         const isPdfPage = pdfWeeks.includes(activePage);
+        const pdfFile = activePage === 'Week14' ? '/final.pdf' : `/${activePage.toLowerCase()}.pdf`;
         return (
           <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
             <div className="w-full max-w-[1200px] mx-auto flex flex-col">
@@ -393,6 +394,8 @@ function App() {
               >
                 {activePage === 'Midterm'
                   ? 'Midterm'
+                  : activePage === 'Week14'
+                  ? 'Final'
                   : `week.${activePage.replace('Week', '').replace('_1', '').replace('_2', '')}`}
               </h2>
               <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${isPdfPage ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
@@ -439,10 +442,10 @@ function App() {
                       }
                     `}</style>
                     <Document
-                      file={`/${activePage.toLowerCase()}.pdf`}
+                      file={pdfFile}
                       onLoadSuccess={onDocumentLoadSuccess}
                       loading={<p className="text-center mt-10 text-[#171717]/50 font-mono">Loading PDF...</p>}
-                      error={<p className="text-center mt-10 text-red-500 font-mono">Failed to load PDF ({activePage.toLowerCase()}.pdf).</p>}
+                      error={<p className="text-center mt-10 text-red-500 font-mono">Failed to load PDF ({pdfFile.slice(1)}).</p>}
                       noData={<p className="text-center mt-10 text-[#171717]/50 font-mono">No PDF file specified.</p>}
                     >
                       {Array.from(new Array(numPages || 0), (el, index) => (
