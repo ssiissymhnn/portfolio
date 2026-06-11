@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
+import PdfPages from './PdfPages';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -20,12 +21,6 @@ const clusterItems = [
 ];
 
 function App() {
-  const [numPages, setNumPages] = useState(null);
-
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
-
   const [isRevealed, setIsRevealed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,10 +47,15 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [activePage]);
 
-  // Reset PDF page count when changing pages to ensure new PDF loads correctly
+  const isWeekDetailPage =
+    (activePage.startsWith('Week') && activePage !== 'Week4') ||
+    activePage === 'Midterm' ||
+    activePage === 'Exhibition';
+
   useEffect(() => {
-    setNumPages(null);
-  }, [activePage]);
+    document.body.classList.toggle('week-detail-page', isWeekDetailPage);
+    return () => document.body.classList.remove('week-detail-page');
+  }, [isWeekDetailPage]);
 
   const toggleGallery = () => {
     setIsRevealed(!isRevealed);
@@ -394,22 +394,22 @@ function App() {
         const pdfFile = activePage === 'Week14' ? '/final.pdf' : `/${activePage.toLowerCase()}.pdf`;
         return (
           <section className="relative w-full min-h-screen pt-[18vh] md:pt-[22vh] pb-32 animate-fade-in flex px-[8vw] md:px-[12vw]">
+            <button
+              onClick={() => {
+                if (activePage === 'Week4_1' || activePage === 'Week4_2') {
+                  setActivePage('Week4');
+                } else {
+                  setActivePage('WorkList');
+                }
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+              className="fixed z-[500] top-[18vh] md:top-[22vh] left-[2vw] md:left-[3vw] text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light"
+              style={{ fontFamily: '"Poltawski Nowy", serif' }}
+              aria-label="Go Back"
+            >
+              ←
+            </button>
             <div className="w-full max-w-[1200px] mx-auto flex flex-col">
-              <button
-                onClick={() => {
-                  if (activePage === 'Week4_1' || activePage === 'Week4_2') {
-                    setActivePage('Week4');
-                  } else {
-                    setActivePage('WorkList');
-                  }
-                  window.scrollTo({ top: 0, behavior: 'instant' });
-                }}
-                className="self-start text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light mb-[2vh] md:mb-[3vh]"
-                style={{ fontFamily: '"Poltawski Nowy", serif' }}
-                aria-label="Go Back"
-              >
-                ←
-              </button>
               <h2
                 className="text-3xl md:text-[40px] font-extrabold text-[#171717] mb-[3vh] md:mb-[4vh] tracking-tight leading-none"
                 style={{ fontFamily: '"Futura", "Trebuchet MS", sans-serif' }}
@@ -424,44 +424,7 @@ function App() {
               </h2>
               <div className={`w-full ${isPdfPage ? 'bg-transparent' : 'min-h-[40vh] bg-[#dadada] shadow-sm flex items-center justify-center'}`}>
                 {isPdfPage ? (
-                  <div className="w-full custom-pdf-container relative">
-                    <style>{`
-                      .custom-pdf-container .react-pdf__Document {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        width: 100%;
-                      }
-                      .custom-pdf-container .react-pdf__Page {
-                        margin-bottom: 0 !important;
-                        width: 100% !important;
-                        display: flex !important;
-                        justify-content: center !important;
-                      }
-                      .custom-pdf-container .react-pdf__Page__canvas {
-                        margin: 0 !important;
-                        display: block !important;
-                        width: 100% !important;
-                        height: auto !important;
-                      }
-                    `}</style>
-                    <Document
-                      file={pdfFile}
-                      onLoadSuccess={onDocumentLoadSuccess}
-                      loading={<p className="text-center mt-10 text-[#171717]/50 font-mono">Loading PDF...</p>}
-                      error={<p className="text-center mt-10 text-red-500 font-mono">Failed to load PDF ({pdfFile.slice(1)}).</p>}
-                      noData={<p className="text-center mt-10 text-[#171717]/50 font-mono">No PDF file specified.</p>}
-                    >
-                      {Array.from(new Array(numPages || 0), (el, index) => (
-                        <Page
-                          key={`page_${index + 1}`}
-                          pageNumber={index + 1}
-                          renderTextLayer={false}
-                          renderAnnotationLayer={false}
-                        />
-                      ))}
-                    </Document>
-                  </div>
+                  <PdfPages file={pdfFile} />
                 ) : (
                   <p className="text-[#171717]/50 font-mono">
                     {activePage === 'Exhibition'
@@ -471,9 +434,9 @@ function App() {
                 )}
               </div>
               {activePage === 'Week14' && (
-                <div className="w-full mt-[4vh]">
+                <div className="w-full mt-[4vh] flex justify-center">
                   <video
-                    className="w-full"
+                    className="w-1/4 min-w-[180px] max-w-[300px]"
                     controls
                     preload="metadata"
                     playsInline
