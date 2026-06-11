@@ -403,7 +403,7 @@ function App() {
                 }
                 window.scrollTo({ top: 0, behavior: 'instant' });
               }}
-              className="fixed z-[500] top-[16vh] md:top-[20vh] left-[3.5vw] md:left-[4.5vw] text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light"
+              className="fixed z-[500] top-[8vh] left-[6vw] text-[#919444] hover:text-[#454719] transition-colors text-[24px] md:text-[32px] font-light"
               style={{ fontFamily: '"Poltawski Nowy", serif' }}
               aria-label="Go Back"
             >
