@@ -280,7 +280,7 @@ function App() {
               ←
             </button>
             <div className="grid grid-cols-4 gap-y-25 gap-x-30 md:gap-x-60 w-full text-center">
-              {[...Array(14)].map((_, i) => {
+              {[...Array(15)].map((_, i) => {
                 if (i === 6) {
                   return (
                     <div
@@ -299,6 +299,28 @@ function App() {
                         }}
                       >
                         Midterm
+                      </span>
+                    </div>
+                  );
+                }
+                if (i === 14) {
+                  return (
+                    <div
+                      key="exhibition"
+                      className="cursor-pointer group flex justify-center items-center"
+                      onClick={() => {
+                        setActivePage('Exhibition');
+                        window.scrollTo({ top: 0, behavior: 'instant' });
+                      }}
+                    >
+                      <span
+                        className="text-[#919444] Italic transition-all duration-100 group-hover:text-[#454719] group-hover:font-semibold group-hover:underline underline-offset-[12px] decoration-[#454719]"
+                        style={{
+                          fontFamily: '"Poltawski Nowy", serif',
+                          fontSize: '40px'
+                        }}
+                      >
+                        Exhibition
                       </span>
                     </div>
                   );
@@ -366,7 +388,7 @@ function App() {
         </section>
       )}
 
-      {((activePage.startsWith('Week') && activePage !== 'Week4') || activePage === 'Midterm') && (() => {
+      {((activePage.startsWith('Week') && activePage !== 'Week4') || activePage === 'Midterm' || activePage === 'Exhibition') && (() => {
         const pdfWeeks = ['Week2', 'Week3', 'Week4_1', 'Week4_2', 'Week5', 'Week6', 'Week8', 'Week9', 'Week10', 'Week11', 'Week12', 'Week13', 'Week14', 'Midterm'];
         const isPdfPage = pdfWeeks.includes(activePage);
         const pdfFile = activePage === 'Week14' ? '/final.pdf' : `/${activePage.toLowerCase()}.pdf`;
@@ -396,6 +418,8 @@ function App() {
                   ? 'Midterm'
                   : activePage === 'Week14'
                   ? 'Final'
+                  : activePage === 'Exhibition'
+                  ? 'Student Exhibition'
                   : `week.${activePage.replace('Week', '').replace('_1', '').replace('_2', '')}`}
               </h2>
               <div className={`w-full h-[75vh] md:h-[80vh] overflow-hidden flex items-center justify-center ${isPdfPage ? 'bg-transparent' : 'bg-[#dadada] shadow-sm '}`}>
@@ -459,7 +483,11 @@ function App() {
                     </Document>
                   </div>
                 ) : (
-                  <p className="text-[#171717]/50 font-mono">Week {activePage.replace('Week', '').replace('_1', '').replace('_2', '')} Content Area (Placeholder)</p>
+                  <p className="text-[#171717]/50 font-mono">
+                    {activePage === 'Exhibition'
+                      ? 'Student Exhibition Content Area (Placeholder)'
+                      : `Week ${activePage.replace('Week', '').replace('_1', '').replace('_2', '')} Content Area (Placeholder)`}
+                  </p>
                 )}
               </div>
             </div>
